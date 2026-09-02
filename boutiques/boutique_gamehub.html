@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>GameHub</title>
+<style>
+  body { font-family: Arial, sans-serif; background: #111827; color: #f3f4f6; margin: 0; padding: 30px; }
+  h1 { color: #f59e0b; text-align: center; }
+  .grille { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; max-width: 900px; margin: 30px auto; }
+  .jeu { background: #1f2937; border-radius: 10px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
+  .titre-jeu { font-size: 1.1em; font-weight: bold; margin: 0 0 8px; color: #fbbf24; }
+  .prix { font-size: 1.3em; font-weight: bold; color: #34d399; margin: 4px 0; }
+  .frais-port { color: #9ca3af; font-size: 0.9em; margin: 2px 0; }
+  .dispo { font-size: 0.85em; padding: 2px 8px; border-radius: 12px; display: inline-block; margin-top: 6px; }
+  .dispo.oui { background: #065f46; color: #a7f3d0; }
+  .dispo.non { background: #7f1d1d; color: #fecaca; }
+</style>
+</head>
+<body>
+  <h1>🎮 GameHub</h1>
+  <div class="grille">
+
+    <div class="jeu">
+      <p class="titre-jeu">The Legend of Zephyr</p>
+      <p class="prix">39,99 €</p>
+      <p class="frais-port">Livraison : 4,90 €</p>
+      <span class="dispo oui">disponible</span>
+    </div>
+
+    <div class="jeu">
+      <p class="titre-jeu">Star Racer X</p>
+      <p class="prix">29,50 €</p>
+      <p class="frais-port">Livraison : 3,90 €</p>
+      <span class="dispo oui">disponible</span>
+    </div>
+
+    <div class="jeu">
+      <p class="titre-jeu">Shadow Realm II</p>
+      <p class="prix">54,99 €</p>
+      <p class="frais-port">Livraison : 0,00 €</p>
+      <span class="dispo non">rupture de stock</span>
+    </div>
+
+    <div class="jeu">
+      <p class="titre-jeu">Puzzle Quest Origins</p>
+      <p class="prix">19,99 €</p>
+      <p class="frais-port">Livraison : 2,90 €</p>
+      <span class="dispo oui">disponible</span>
+    </div>
+
+  </div>
+</body>
+</html>

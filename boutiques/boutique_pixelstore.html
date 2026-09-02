@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>PixelStore</title>
+<style>
+  body { font-family: 'Segoe UI', sans-serif; background: #f0f4ff; color: #1e293b; margin: 0; padding: 30px; }
+  h1 { color: #4f46e5; text-align: center; }
+  .grille { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; max-width: 900px; margin: 30px auto; }
+  .game-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+  .game-name { font-size: 1.1em; font-weight: bold; margin: 0 0 8px; color: #4338ca; }
+  .game-price { font-size: 1.3em; font-weight: bold; color: #0f766e; margin: 4px 0; }
+  .shipping { color: #64748b; font-size: 0.9em; margin: 2px 0; }
+  .status { font-size: 0.85em; padding: 2px 8px; border-radius: 12px; display: inline-block; margin-top: 6px; }
+  .status.in-stock { background: #d1fae5; color: #065f46; }
+  .status.out-of-stock { background: #fee2e2; color: #991b1b; }
+</style>
+</head>
+<body>
+  <h1>🕹️ PixelStore</h1>
+  <div class="grille">
+
+    <div class="game-card">
+      <p class="game-name">The Legend of Zephyr</p>
+      <p class="game-price">42,00 €</p>
+      <p class="shipping">Frais de port : 0,00 €</p>
+      <span class="status in-stock">en stock</span>
+    </div>
+
+    <div class="game-card">
+      <p class="game-name">Star Racer X</p>
+      <p class="game-price">27,99 €</p>
+      <p class="shipping">Frais de port : 5,50 €</p>
+      <span class="status in-stock">en stock</span>
+    </div>
+
+    <div class="game-card">
+      <p class="game-name">Shadow Realm II</p>
+      <p class="game-price">49,90 €</p>
+      <p class="shipping">Frais de port : 3,00 €</p>
+      <span class="status in-stock">en stock</span>
+    </div>
+
+    <div class="game-card">
+      <p class="game-name">Galaxy Defenders</p>
+      <p class="game-price">34,99 €</p>
+      <p class="shipping">Frais de port : 4,00 €</p>
+      <span class="status out-of-stock">rupture de stock</span>
+    </div>
+
+  </div>
+</body>
+</html>

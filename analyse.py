@@ -1,29 +1,44 @@
-# -*- coding: utf-8 -*-
-"""
-Module ANALYSE — Personne C (Pandas)
-Rôle : nettoyer les prix, calculer le prix total réel et trouver le meilleur choix.
-
-Format d'entrée : liste de dictionnaires (reçue de extracteur.py)
-Format de sortie : un DataFrame trié par prix total, affiché à l'utilisateur.
-"""
+import pandas as pd
 
 
-def comparer_prix(liste_resultats):
-    """
-    TODO (Personne C) :
-    - construire un DataFrame Pandas à partir de la liste de dictionnaires
-    - nettoyer les prix et frais de livraison (texte -> nombre)
-    - calculer prix_total = prix + livraison
-    - trier du moins cher au plus cher
-    - retourner le DataFrame
-    """
-    pass
+def nettoyer_prix(texte):
+    if not texte:
+        return None
+    texte = texte.replace("€", "").replace(",", ".").strip()
+    try:
+        return float(texte)
+    except ValueError:
+        return None
+
+
+def comparer_prix(liste_resultats, produit=None):
+    if not liste_resultats:
+        return pd.DataFrame()
+
+    df = pd.DataFrame(liste_resultats)
+    
+    # Filtrer par produit si spécifié
+    if produit:
+        df = df[df["jeu"].str.contains(produit, case=False, na=False)]
+    
+    if df.empty:
+        return pd.DataFrame()
+    
+    df["prix_num"] = df["prix"].apply(nettoyer_prix)
+    df["livraison_num"] = df["livraison"].apply(nettoyer_prix).fillna(0.0)
+    df = df.dropna(subset=["prix_num"])
+    df["prix_total"] = df["prix_num"] + df["livraison_num"]
+    df = df.sort_values(by=["jeu", "prix_total"]).reset_index(drop=True)
+    return df
 
 
 def afficher_resultat(df):
-    """
-    TODO (Personne C) :
-    - afficher le tableau final de façon lisible
-    - mettre en avant le meilleur choix (première ligne)
-    """
-    pass
+    if df.empty:
+        print("Aucun résultat exploitable.")
+        return
+
+    for jeu, groupe in df.groupby("jeu"):
+        print(f"\n=== {jeu} ===")
+        print(groupe[["site", "prix", "livraison", "prix_total", "stock"]].to_string(index=False))
+        meilleur = groupe.iloc[0]
+        print(f">>> Meilleur choix : {meilleur['site']} — {meilleur['prix_total']:.2f} € au total")

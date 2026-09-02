@@ -2,50 +2,210 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>PixelStore</title>
+<title>PixelStore - Jeux Vidéo</title>
 <style>
-  body { font-family: 'Segoe UI', sans-serif; background: #f0f4ff; color: #1e293b; margin: 0; padding: 30px; }
-  h1 { color: #4f46e5; text-align: center; }
-  .grille { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; max-width: 900px; margin: 30px auto; }
-  .game-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
-  .game-name { font-size: 1.1em; font-weight: bold; margin: 0 0 8px; color: #4338ca; }
-  .game-price { font-size: 1.3em; font-weight: bold; color: #0f766e; margin: 4px 0; }
-  .shipping { color: #64748b; font-size: 0.9em; margin: 2px 0; }
-  .status { font-size: 0.85em; padding: 2px 8px; border-radius: 12px; display: inline-block; margin-top: 6px; }
-  .status.in-stock { background: #d1fae5; color: #065f46; }
-  .status.out-of-stock { background: #fee2e2; color: #991b1b; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #0a0e17; color: #e0e0e0; margin: 0; padding: 30px; }
+  h1 { color: #00d4ff; text-align: center; font-size: 2.5em; margin-bottom: 5px; text-shadow: 0 0 20px rgba(0,212,255,0.3); }
+  .sous-titre { text-align: center; color: #8899aa; margin-bottom: 30px; font-size: 1.1em; }
+  .grille { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px; max-width: 1200px; margin: 0 auto; }
+  .game-card { background: linear-gradient(145deg, #141b2b, #1a2335); border-radius: 15px; padding: 20px; border: 1px solid #1f2a3f; transition: all 0.3s ease; }
+  .game-card:hover { transform: translateY(-8px); border-color: #00d4ff; box-shadow: 0 10px 40px rgba(0,212,255,0.1); }
+  .game-name { font-size: 1.2em; font-weight: 700; margin: 0 0 8px; color: #ffffff; }
+  .game-price { font-size: 1.5em; font-weight: bold; color: #00ff88; margin: 8px 0; }
+  .shipping { color: #8899aa; font-size: 0.9em; margin: 4px 0; }
+  .status { font-size: 0.85em; padding: 4px 12px; border-radius: 20px; display: inline-block; margin-top: 8px; font-weight: 600; }
+  .status.en-stock { background: #00ff8822; color: #00ff88; border: 1px solid #00ff8844; }
+  .status.rupture { background: #ff004422; color: #ff4444; border: 1px solid #ff444444; }
+  .category { background: #1f2a3f; padding: 4px 12px; border-radius: 15px; font-size: 0.7em; display: inline-block; margin-top: 5px; color: #8899aa; text-transform: uppercase; letter-spacing: 0.5px; }
+  .badge { background: #00d4ff22; color: #00d4ff; padding: 2px 10px; border-radius: 12px; font-size: 0.7em; margin-left: 8px; border: 1px solid #00d4ff44; }
 </style>
 </head>
 <body>
-  <h1>🕹️ PixelStore</h1>
+  <h1>🛒 PixelStore</h1>
+  <p class="sous-titre">⭐ La boutique des gamers passionnés</p>
   <div class="grille">
 
+    <!-- ===== JEUX D'ACTION ===== -->
     <div class="game-card">
-      <p class="game-name">The Legend of Zephyr</p>
-      <p class="game-price">42,00 €</p>
-      <p class="shipping">Frais de port : 0,00 €</p>
-      <span class="status in-stock">en stock</span>
+      <div class="game-name">Grand Theft Auto VI <span class="badge">🔥</span></div>
+      <div class="game-price">64,99 €</div>
+      <div class="shipping">Frais de port : 3,00 €</div>
+      <span class="category">Action</span>
+      <span class="status en-stock">✅ disponible</span>
     </div>
 
     <div class="game-card">
-      <p class="game-name">Star Racer X</p>
-      <p class="game-price">27,99 €</p>
-      <p class="shipping">Frais de port : 5,50 €</p>
-      <span class="status in-stock">en stock</span>
+      <div class="game-name">Call of Duty: Black Ops V</div>
+      <div class="game-price">59,99 €</div>
+      <div class="shipping">Frais de port : 2,50 €</div>
+      <span class="category">FPS</span>
+      <span class="status rupture">❌ rupture</span>
     </div>
 
     <div class="game-card">
-      <p class="game-name">Shadow Realm II</p>
-      <p class="game-price">49,90 €</p>
-      <p class="shipping">Frais de port : 3,00 €</p>
-      <span class="status in-stock">en stock</span>
+      <div class="game-name">Cyberpunk 2077</div>
+      <div class="game-price">34,99 €</div>
+      <div class="shipping">Frais de port : 2,90 €</div>
+      <span class="category">RPG</span>
+      <span class="status en-stock">✅ disponible</span>
     </div>
 
     <div class="game-card">
-      <p class="game-name">Galaxy Defenders</p>
-      <p class="game-price">34,99 €</p>
-      <p class="shipping">Frais de port : 4,00 €</p>
-      <span class="status out-of-stock">rupture de stock</span>
+      <div class="game-name">Red Dead Redemption III <span class="badge">⭐</span></div>
+      <div class="game-price">54,99 €</div>
+      <div class="shipping">Frais de port : 3,50 €</div>
+      <span class="category">Action</span>
+      <span class="status en-stock">✅ disponible</span>
+    </div>
+
+    <div class="game-card">
+      <div class="game-name">The Witcher 4</div>
+      <div class="game-price">54,99 €</div>
+      <div class="shipping">Frais de port : 2,00 €</div>
+      <span class="category">RPG</span>
+      <span class="status en-stock">✅ disponible</span>
+    </div>
+
+    <div class="game-card">
+      <div class="game-name">Assassin's Creed Mirage</div>
+      <div class="game-price">39,99 €</div>
+      <div class="shipping">Frais de port : 2,80 €</div>
+      <span class="category">Action</span>
+      <span class="status rupture">❌ rupture</span>
+    </div>
+
+    <div class="game-card">
+      <div class="game-name">Far Cry 7</div>
+      <div class="game-price">49,99 €</div>
+      <div class="shipping">Frais de port : 3,20 €</div>
+      <span class="category">FPS</span>
+      <span class="status en-stock">✅ disponible</span>
+    </div>
+
+    <div class="game-card">
+      <div class="game-name">Starfield</div>
+      <div class="game-price">44,99 €</div>
+      <div class="shipping">Frais de port : 2,50 €</div>
+      <span class="category">RPG</span>
+      <span class="status en-stock">✅ disponible</span>
+    </div>
+
+    <!-- ===== JEUX DE SPORT ===== -->
+    <div class="game-card">
+      <div class="game-name">FIFA 24 <span class="badge">🎯</span></div>
+      <div class="game-price">54,99 €</div>
+      <div class="shipping">Frais de port : 2,00 €</div>
+      <span class="category">Sport</span>
+      <span class="status en-stock">✅ disponible</span>
+    </div>
+
+    <div class="game-card">
+      <div class="game-name">NBA 2K24</div>
+      <div class="game-price">44,99 €</div>
+      <div class="shipping">Frais de port : 2,50 €</div>
+      <span class="category">Sport</span>
+      <span class="status rupture">❌ rupture</span>
+    </div>
+
+    <div class="game-card">
+      <div class="game-name">F1 23</div>
+      <div class="game-price">39,99 €</div>
+      <div class="shipping">Frais de port : 2,80 €</div>
+      <span class="category">Course</span>
+      <span class="status en-stock">✅ disponible</span>
+    </div>
+
+    <!-- ===== JEUX DE STRATÉGIE ===== -->
+    <div class="game-card">
+      <div class="game-name">Civilization VII <span class="badge">🧠</span></div>
+      <div class="game-price">49,99 €</div>
+      <div class="shipping">Frais de port : 2,00 €</div>
+      <span class="category">Stratégie</span>
+      <span class="status en-stock">✅ disponible</span>
+    </div>
+
+    <div class="game-card">
+      <div class="game-name">Age of Empires IV</div>
+      <div class="game-price">34,99 €</div>
+      <div class="shipping">Frais de port : 2,50 €</div>
+      <span class="category">Stratégie</span>
+      <span class="status en-stock">✅ disponible</span>
+    </div>
+
+    <!-- ===== JEUX DE PLATE-FORME ===== -->
+    <div class="game-card">
+      <div class="game-name">Super Mario Odyssey 2 <span class="badge">👑</span></div>
+      <div class="game-price">44,99 €</div>
+      <div class="shipping">Frais de port : 2,00 €</div>
+      <span class="category">Plate-forme</span>
+      <span class="status en-stock">✅ disponible</span>
+    </div>
+
+    <div class="game-card">
+      <div class="game-name">Sonic Frontiers 2</div>
+      <div class="game-price">34,99 €</div>
+      <div class="shipping">Frais de port : 2,90 €</div>
+      <span class="category">Plate-forme</span>
+      <span class="status rupture">❌ rupture</span>
+    </div>
+
+    <!-- ===== JEUX D'HORREUR ===== -->
+    <div class="game-card">
+      <div class="game-name">Resident Evil 9 <span class="badge">🧟</span></div>
+      <div class="game-price">54,99 €</div>
+      <div class="shipping">Frais de port : 2,50 €</div>
+      <span class="category">Horreur</span>
+      <span class="status en-stock">✅ disponible</span>
+    </div>
+
+    <div class="game-card">
+      <div class="game-name">Silent Hill 2 Remake</div>
+      <div class="game-price">39,99 €</div>
+      <div class="shipping">Frais de port : 3,00 €</div>
+      <span class="category">Horreur</span>
+      <span class="status en-stock">✅ disponible</span>
+    </div>
+
+    <!-- ===== JEUX INDÉPENDANTS ===== -->
+    <div class="game-card">
+      <div class="game-name">Hollow Knight: Silksong</div>
+      <div class="game-price">19,99 €</div>
+      <div class="shipping">Frais de port : 1,50 €</div>
+      <span class="category">Indépendant</span>
+      <span class="status en-stock">✅ disponible</span>
+    </div>
+
+    <div class="game-card">
+      <div class="game-name">Stardew Valley 2 <span class="badge">🌾</span></div>
+      <div class="game-price">14,99 €</div>
+      <div class="shipping">Frais de port : 1,00 €</div>
+      <span class="category">Indépendant</span>
+      <span class="status en-stock">✅ disponible</span>
+    </div>
+
+    <div class="game-card">
+      <div class="game-name">Celeste 2</div>
+      <div class="game-price">9,99 €</div>
+      <div class="shipping">Frais de port : 1,50 €</div>
+      <span class="category">Indépendant</span>
+      <span class="status rupture">❌ rupture</span>
+    </div>
+
+    <!-- ===== JEUX DE BATAILLE ROYALE ===== -->
+    <div class="game-card">
+      <div class="game-name">Fortnite Chapter 5</div>
+      <div class="game-price">0,00 €</div>
+      <div class="shipping">Frais de port : 0,00 €</div>
+      <span class="category">Battle Royale</span>
+      <span class="status en-stock">✅ disponible</span>
+    </div>
+
+    <div class="game-card">
+      <div class="game-name">Apex Legends 2 <span class="badge">🎯</span></div>
+      <div class="game-price">0,00 €</div>
+      <div class="shipping">Frais de port : 0,00 €</div>
+      <span class="category">Battle Royale</span>
+      <span class="status en-stock">✅ disponible</span>
     </div>
 
   </div>

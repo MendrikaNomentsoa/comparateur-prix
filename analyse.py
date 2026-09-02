@@ -11,19 +11,11 @@ def nettoyer_prix(texte):
         return None
 
 
-def comparer_prix(liste_resultats, produit=None):
+def comparer_prix(liste_resultats):
     if not liste_resultats:
         return pd.DataFrame()
 
     df = pd.DataFrame(liste_resultats)
-    
-    # Filtrer par produit si spécifié
-    if produit:
-        df = df[df["jeu"].str.contains(produit, case=False, na=False)]
-    
-    if df.empty:
-        return pd.DataFrame()
-    
     df["prix_num"] = df["prix"].apply(nettoyer_prix)
     df["livraison_num"] = df["livraison"].apply(nettoyer_prix).fillna(0.0)
     df = df.dropna(subset=["prix_num"])

@@ -1,5 +1,6 @@
 import requests
 
+# Modifier pour pointer vers vos fichiers HTML
 SITES = {
     "GameHub": "http://localhost:8000/boutique_gamehub.html",
     "PixelStore": "http://localhost:8000/boutique_pixelstore.html",
@@ -20,7 +21,7 @@ def fetch_page(url, timeout=5):
 
 
 def fetch_all_sites(produit=None):
-    # Le produit est passé mais pas encore utilisé dans cette version
+    # Le produit est passé mais pas utilisé pour l'instant
     return {nom: fetch_page(url) for nom, url in SITES.items()}
 
 

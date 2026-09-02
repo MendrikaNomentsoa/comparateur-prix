@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameFinder - Comparateur de Prix</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation fixe -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-crown"></i>
+                <span>Game<span>Finder</span></span>
+            </div>
+            <div class="nav-links">
+                <a href="#" class="active"><i class="fas fa-home"></i> Accueil</a>
+                <a href="#"><i class="fas fa-fire"></i> Tendance</a>
+                <a href="#"><i class="fas fa-star"></i> Favoris</a>
+            </div>
+            <div class="nav-user">
+                <i class="fas fa-user-circle"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Section Recherche - EN HAUT ET VISIBLE -->
+    <section class="search-section">
+        <div class="search-container">
+            <div class="search-header">
+                <h1>🎮 Trouvez le <span>meilleur prix</span></h1>
+                <p>Comparez instantanément les prix sur plusieurs boutiques</p>
+            </div>
+            
+            <!-- Barre de recherche principale -->
+            <form id="searchForm" class="search-form">
+                <div class="search-wrapper">
+                    <i class="fas fa-search search-icon"></i>
+                    <input 
+                        type="text" 
+                        id="produit" 
+                        placeholder="Rechercher un jeu... (ex: Galaxy Defenders, Mario, Zelda)" 
+                        required
+                        autocomplete="off"
+                    >
+                    <button type="submit" class="search-btn">
+                        <i class="fas fa-arrow-right"></i>
+                        <span>Rechercher</span>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Suggestions rapides -->
+            <div class="quick-suggestions">
+                <span><i class="fas fa-bolt"></i> Populaires :</span>
+                <button class="suggestion-chip" data-game="Galaxy Defenders">
+                    <i class="fas fa-gamepad"></i> Galaxy Defenders
+                </button>
+                <button class="suggestion-chip" data-game="Mario">
+                    <i class="fas fa-star"></i> Mario
+                </button>
+                <button class="suggestion-chip" data-game="Zelda">
+                    <i class="fas fa-sword"></i> Zelda
+                </button>
+                <button class="suggestion-chip" data-game="Cyberpunk">
+                    <i class="fas fa-robot"></i> Cyberpunk
+                </button>
+                <button class="suggestion-chip" data-game="FIFA">
+                    <i class="fas fa-futbol"></i> FIFA
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Zone des résultats - JUSTE EN DESSOUS -->
+    <section class="results-wrapper">
+        <!-- Loading -->
+        <div id="loading" class="loading-container" style="display: none;">
+            <div class="loading-spinner">
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+            </div>
+            <p class="loading-text">Recherche en cours...</p>
+            <div class="loading-progress">
+                <div class="progress-bar"></div>
+            </div>
+        </div>
+
+        <!-- Résultats -->
+        <div id="results" class="results-content" style="display: none;">
+            <!-- En-tête des résultats -->
+            <div class="results-header">
+                <div class="results-title">
+                    <h2>
+                        <i class="fas fa-search"></i>
+                        Résultats pour "<span id="searchTerm"></span>"
+                    </h2>
+                    <span class="results-count">
+                        <i class="fas fa-box"></i>
+                        <span id="resultCount"></span> offres trouvées
+                    </span>
+                </div>
+                <div class="results-actions">
+                    <button class="sort-btn" onclick="trierPrix()">
+                        <i class="fas fa-sort-amount-down"></i> Trier par prix
+                    </button>
+                </div>
+            </div>
+
+            <!-- Meilleure offre -->
+            <div id="bestDeal" class="best-deal-card" style="display: none;"></div>
+
+            <!-- Grille des produits -->
+            <div class="products-grid" id="productList"></div>
+        </div>
+
+        <!-- Aucun résultat -->
+        <div id="noResults" class="no-results-container" style="display: none;">
+            <div class="no-results-content">
+                <div class="no-results-icon">
+                    <i class="fas fa-gamepad"></i>
+                </div>
+                <h3>Aucun jeu trouvé</h3>
+                <p>Essayez avec un autre nom ou vérifiez l'orthographe</p>
+                <div class="no-results-suggestions">
+                    <span>Suggestions :</span>
+                    <button class="suggestion-chip" data-game="Mario Kart">Mario Kart</button>
+                    <button class="suggestion-chip" data-game="Zelda">Zelda</button>
+                    <button class="suggestion-chip" data-game="FIFA">FIFA</button>
+                    <button class="suggestion-chip" data-game="GTA">GTA</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Toast d'erreur -->
+    <div id="error" class="error-toast" style="display: none;">
+        <div class="error-content">
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="errorMessage"></span>
+            <button onclick="this.parentElement.parentElement.style.display='none'">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <i class="fas fa-crown"></i>
+                <span>Game<span>Finder</span></span>
+                <p>© 2026 - Comparateur de prix gaming</p>
+            </div>
+            <div class="footer-links">
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-discord"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>

@@ -6,194 +6,173 @@
     <title>Recherche - GameFinder</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar" id="navbar">
+    <nav class="navbar">
         <div class="container">
             <a href="/" class="nav-brand">
-                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
-                    <path d="M2 17L12 22L22 17"/>
-                    <path d="M2 12L12 17L22 12"/>
-                    <circle cx="12" cy="12" r="3"/>
+                <svg class="logo-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="10" width="34" height="20" rx="10" fill="currentColor" opacity="0.12"/>
+                    <rect x="5" y="12" width="30" height="16" rx="8" stroke="currentColor" stroke-width="1.8" fill="none"/>
+                    <circle cx="12" cy="20" r="3.2" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                    <line x1="12" y1="16.8" x2="12" y2="23.2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                    <line x1="8.8" y1="20" x2="15.2" y2="20" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+                    <circle cx="27" cy="17.5" r="1.6" fill="currentColor"/>
+                    <circle cx="30.5" cy="20" r="1.6" fill="currentColor"/>
+                    <circle cx="27" cy="22.5" r="1.6" fill="currentColor"/>
+                    <circle cx="23.5" cy="20" r="1.6" fill="currentColor"/>
+                    <rect x="16" y="20.5" width="8" height="2" rx="1" fill="currentColor" opacity="0.5"/>
                 </svg>
-                <span class="brand-name">Game<span>Finder</span></span>
+                <span>Game<span>Finder</span></span>
             </a>
             <div class="nav-links">
-                <a href="/">Accueil</a>
-                <a href="/recherche" class="active">Rechercher</a>
+                <a href="/" data-i18n="nav_home">Accueil</a>
+                <a href="/recherche" class="active" data-i18n="nav_search">Rechercher</a>
             </div>
-            <a href="/" class="btn-nav-secondary">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M19 12H5M5 12L12 19M5 12L12 5"/>
-                </svg>
-                <span>Retour</span>
-            </a>
+            <div class="nav-actions">
+                <div class="lang-select" id="langSelect">
+                    <button class="lang-btn" type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Choisir la langue">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                        <span class="lang-current">FR</span>
+                        <svg class="lang-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <ul class="lang-menu" role="listbox">
+                        <li data-lang="fr" role="option">Français</li>
+                        <li data-lang="en" role="option">English</li>
+                        <li data-lang="de" role="option">Deutsch</li>
+                        <li data-lang="zh" role="option">中文</li>
+                        <li data-lang="es" role="option">Español</li>
+                    </ul>
+                </div>
+                <button class="theme-toggle" aria-label="Changer de theme">
+                    <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                    <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                </button>
+                <a href="/" class="btn-nav" data-i18n="nav_back">Retour</a>
+            </div>
         </div>
     </nav>
 
-    <!-- Search Section -->
-    <section class="search-section">
+    <section class="search-page">
         <div class="container">
-            <div class="search-header">
-                <div class="search-header-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="11" cy="11" r="8"/>
-                        <path d="M21 21L16.65 16.65"/>
-                    </svg>
-                </div>
-                <h1>Rechercher un jeu</h1>
-                <p>Trouvez le meilleur prix en quelques secondes</p>
-            </div>
+            <div class="search-layout">
 
-            <!-- Barre de recherche -->
-            <form id="searchForm" class="search-form">
-                <div class="search-wrapper">
-                    <div class="search-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="11" cy="11" r="8"/>
-                            <path d="M21 21L16.65 16.65"/>
-                        </svg>
-                    </div>
-                    <input 
-                        type="text" 
-                        id="produit" 
-                        placeholder="Ex: Galaxy Defenders, Mario, Zelda..." 
-                        required
-                        autocomplete="off"
-                    >
-                    <button type="submit" class="search-btn">
-                        <span>Rechercher</span>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12H19M19 12L12 5M19 12L12 19"/>
-                        </svg>
-                    </button>
-                </div>
-            </form>
-
-            <!-- Suggestions -->
-            <div class="suggestions">
-                <span class="suggestions-label">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z"/>
-                    </svg>
-                    Populaires :
-                </span>
-                <button class="suggestion-chip" data-game="Galaxy Defenders">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="2" y="6" width="20" height="12" rx="2"/>
-                        <path d="M6 12H8M16 12H18M10 12H14"/>
-                    </svg>
-                    Galaxy Defenders
-                </button>
-                <button class="suggestion-chip" data-game="Mario">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="10"/>
-                        <path d="M8 14C8 14 10 16 12 16C14 16 16 14 16 14"/>
-                        <circle cx="9" cy="9" r="1.5"/>
-                        <circle cx="15" cy="9" r="1.5"/>
-                    </svg>
-                    Mario
-                </button>
-                <button class="suggestion-chip" data-game="Zelda">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
-                        <path d="M2 17L12 22L22 17"/>
-                        <path d="M2 12L12 17L22 12"/>
-                    </svg>
-                    Zelda
-                </button>
-                <button class="suggestion-chip" data-game="Cyberpunk">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
-                        <path d="M2 17L12 22L22 17"/>
-                        <path d="M2 12L12 17L22 12"/>
-                        <circle cx="12" cy="12" r="3"/>
-                    </svg>
-                    Cyberpunk
-                </button>
-                <button class="suggestion-chip" data-game="FIFA">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="10"/>
-                        <path d="M12 2V22M2 12H22"/>
-                        <circle cx="12" cy="12" r="4"/>
-                    </svg>
-                    FIFA
-                </button>
-                <button class="suggestion-chip" data-game="GTA">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
-                        <path d="M2 17L12 22L22 17"/>
-                        <path d="M2 12L12 17L22 12"/>
-                        <circle cx="12" cy="12" r="3"/>
-                    </svg>
-                    GTA
-                </button>
-            </div>
-
-            <!-- Results -->
-            <div class="results-area">
-                <!-- Loading -->
-                <div id="loading" class="loading" style="display: none;">
-                    <div class="spinner"></div>
-                    <p>Recherche en cours...</p>
-                </div>
-
-                <!-- Results -->
-                <div id="results" class="results" style="display: none;">
-                    <div class="results-header">
-                        <div>
-                            <h2>Résultats pour "<span id="searchTerm"></span>"</h2>
-                            <span class="count"><span id="resultCount"></span> offres trouvées</span>
+                <aside class="catalogue-side">
+                    <div class="catalogue-side-header">
+                        <h2 data-i18n="cat_side_title">Jeux</h2>
+                        <div class="catalogue-search">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                            <input type="text" id="catalogueSearch" placeholder="Filtrer..." data-i18n-placeholder="cat_search_placeholder">
                         </div>
-                        <button class="sort-btn" onclick="trierPrix()">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M3 7H21M3 12H18M3 17H15"/>
-                            </svg>
-                            Trier par prix
-                        </button>
+                    </div>
+                    <div id="catalogueSideList" class="catalogue-side-list"></div>
+                    <div class="catalogue-side-footer">
+                        <span data-i18n="cat_side_footer_label">Catalogue</span>
+                        <strong>22 <span data-i18n="cat_games">jeux</span> <em>·</em> 3 <span data-i18n="cat_stores">boutiques</span></strong>
+                    </div>
+                </aside>
+
+                <div class="search-main">
+                    <div class="search-header">
+                        <div class="search-header-icon">
+                            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        </div>
+                        <h1 data-i18n="search_title">Comparer les prix</h1>
+                        <p data-i18n="search_sub">Trouvez le meilleur prix en quelques secondes</p>
                     </div>
 
-                    <div id="bestDeal" class="best-deal" style="display: none;"></div>
-                    <div class="products-grid" id="productList"></div>
+                    <form id="searchForm" class="search-form">
+                        <div class="search-wrapper">
+                            <span class="search-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                            </span>
+                            <input type="text" id="produit" placeholder="Ex: Grand Theft Auto, Mario..." data-i18n-placeholder="search_placeholder" required autocomplete="off">
+                            <button type="submit" class="btn-search" data-i18n="search_btn">Rechercher</button>
+                        </div>
+                    </form>
+
+                    <div class="suggestions">
+                        <span class="label">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                            <span data-i18n="search_popular">Populaires :</span>
+                        </span>
+                        <button class="suggestion-chip" data-game="Grand Theft Auto VI">Grand Theft Auto VI</button>
+                        <button class="suggestion-chip" data-game="Cyberpunk 2077">Cyberpunk 2077</button>
+                        <button class="suggestion-chip" data-game="Super Mario Odyssey 2">Super Mario</button>
+                        <button class="suggestion-chip" data-game="Resident Evil 9">Resident Evil</button>
+                        <button class="suggestion-chip" data-game="The Witcher 4">The Witcher 4</button>
+                        <button class="suggestion-chip" data-game="Call of Duty: Black Ops V">Call of Duty</button>
+                    </div>
+
+                    <div class="catalogue">
+                        <div class="catalogue-header">
+                            <div>
+                                <h2 data-i18n="cat_available_title">Jeux disponibles</h2>
+                                <p data-i18n="cat_available_sub">Selectionnez un jeu pour comparer les prix</p>
+                            </div>
+                        </div>
+                        <div id="catalogueList" class="catalogue-list"></div>
+                    </div>
+
+                    <div class="results-area">
+                        <div id="loading" class="loading" style="display: none;">
+                            <div class="spinner"></div>
+                            <p data-i18n="loading">Recherche en cours...</p>
+                        </div>
+
+                        <div id="results" class="results" style="display: none;">
+                            <div class="results-header">
+                                <div>
+                                    <h2><span data-i18n="results_for">Resultats pour</span> "<span id="searchTerm"></span>"</h2>
+                                    <span class="count"><span id="resultCount"></span> <span data-i18n="offers_found">offres trouvees</span></span>
+                                </div>
+                                <div class="results-actions">
+                                    <button class="sort-btn" onclick="trierPrix()">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+                                        <span data-i18n="sort_price">Trier par prix</span>
+                                    </button>
+                                    <button class="sort-btn" onclick="revenirCatalogue()">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                                        <span data-i18n="all_games">Tous les jeux</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="result-banner" id="resultBanner">
+                                <div class="result-banner-cover" id="resultBannerCover"></div>
+                                <div class="result-banner-info">
+                                    <span class="result-banner-label" data-i18n="result_banner_label">Jeu recherche</span>
+                                    <div class="result-banner-title" id="resultBannerTitle"></div>
+                                </div>
+                            </div>
+                            <div id="bestDeal" class="best-deal" style="display: none;"></div>
+                            <div class="products-grid" id="productList"></div>
+                        </div>
+
+                        <div id="noResults" class="no-results" style="display: none;">
+                            <div class="no-results-icon">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                            </div>
+                            <h3 data-i18n="no_results_title">Aucun jeu trouve</h3>
+                            <p data-i18n="no_results_sub">Essayez avec un autre nom</p>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- No Results -->
-                <div id="noResults" class="no-results" style="display: none;">
-                    <div class="no-results-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="11" cy="11" r="8"/>
-                            <path d="M21 21L16.65 16.65"/>
-                            <line x1="11" y1="8" x2="11" y2="12"/>
-                            <line x1="11" y1="15" x2="11.01" y2="15"/>
-                        </svg>
-                    </div>
-                    <h3>Aucun jeu trouvé</h3>
-                    <p>Essayez avec un autre nom</p>
-                </div>
             </div>
         </div>
     </section>
 
-    <!-- Error Toast -->
     <div id="error" class="error-toast" style="display: none;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"/>
-            <line x1="12" y1="8" x2="12" y2="12"/>
-            <line x1="12" y1="16" x2="12.01" y2="16"/>
-        </svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         <span id="errorMessage"></span>
         <button onclick="this.parentElement.style.display='none'">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="18" y1="6" x2="6" y2="18"/>
-                <line x1="6" y1="6" x2="18" y2="18"/>
-            </svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
     </div>
 
+    <script src="/static/i18n.js"></script>
     <script src="/static/script.js"></script>
 </body>
 </html>

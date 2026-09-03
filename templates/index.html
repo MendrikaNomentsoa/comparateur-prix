@@ -85,24 +85,24 @@
                         <span data-i18n="hero_panel_search">Rechercher un jeu...</span>
                     </div>
                     <div class="panel-offers">
-                        <div class="panel-offer">
-                            <div class="po-cover" style="background-image:url('/static/images/gta.jpg')"></div>
+                        <div class="panel-offer" data-jeu="Grand Theft Auto VI">
+                            <div class="po-cover"></div>
                             <div class="po-info">
                                 <div class="po-name">Grand Theft Auto VI</div>
                                 <div class="po-shop">GameHub · GameStore · PixelStore</div>
                             </div>
                             <div class="po-price">49,99&euro;</div>
                         </div>
-                        <div class="panel-offer">
-                            <div class="po-cover" style="background-image:url('/static/images/mario.avif')"></div>
+                        <div class="panel-offer" data-jeu="Super Mario Odyssey 2">
+                            <div class="po-cover"></div>
                             <div class="po-info">
                                 <div class="po-name">Super Mario Odyssey 2</div>
                                 <div class="po-shop">GameHub · GameStore · PixelStore</div>
                             </div>
                             <div class="po-price best">44,99&euro;</div>
                         </div>
-                        <div class="panel-offer">
-                            <div class="po-cover" style="background-image:url('/static/images/resident-evil-4.jpg')"></div>
+                        <div class="panel-offer" data-jeu="Resident Evil 9">
+                            <div class="po-cover"></div>
                             <div class="po-info">
                                 <div class="po-name">Resident Evil 9</div>
                                 <div class="po-shop">GameHub · GameStore · PixelStore</div>
@@ -125,7 +125,7 @@
         <div class="showcase-grid">
                 <a href="/recherche" class="showcase-card">
                     <div class="card-image" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);">
-                        <img src="/static/images/gta.jpg" alt="GTA" loading="lazy">
+                        <img src="/static/images/gta.jpg" alt="grand theft auto vi" loading="lazy">
                     </div>
                     <div class="card-info">
                         <h4>Grand Theft Auto</h4>
@@ -135,7 +135,7 @@
                 </a>
                 <a href="/recherche" class="showcase-card">
                     <div class="card-image" style="background: linear-gradient(135deg, #1b4332 0%, #2d6a4f 50%, #40916c 100%);">
-                        <img src="/static/images/mario.avif" alt="Super Mario" loading="lazy">
+                        <img src="/static/images/mario.avif" alt="super mario odyssey 2" loading="lazy">
                     </div>
                     <div class="card-info">
                         <h4>Super Mario</h4>
@@ -145,7 +145,7 @@
                 </a>
                 <a href="/recherche" class="showcase-card">
                     <div class="card-image" style="background: linear-gradient(135deg, #3c1518 0%, #69140e 50%, #a44200 100%);">
-                        <img src="/static/images/resident-evil-4.jpg" alt="Resident Evil 4" loading="lazy">
+                        <img src="/static/images/resident-evil-4.jpg" alt="resident evil 9" loading="lazy">
                     </div>
                     <div class="card-info">
                         <h4>Resident Evil 4</h4>
@@ -248,5 +248,32 @@
 
     <script src="/static/i18n.js"></script>
     <script src="/static/script.js"></script>
+    <script>
+    (function() {
+        fetch('/api/catalogue')
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                var map = {};
+                (data.jeux || []).forEach(function(item) {
+                    if (item.image) map[item.jeu.toLowerCase()] = item.image;
+                });
+                document.querySelectorAll('.panel-offer').forEach(function(offer) {
+                    var jeu = offer.getAttribute('data-jeu');
+                    if (!jeu) return;
+                    var imgUrl = map[jeu.toLowerCase()];
+                    if (imgUrl) {
+                        var cover = offer.querySelector('.po-cover');
+                        if (cover) cover.style.backgroundImage = "url('" + imgUrl + "')";
+                    }
+                });
+                document.querySelectorAll('.showcase-card img').forEach(function(img) {
+                    var alt = (img.getAttribute('alt') || '').toLowerCase();
+                    var imgUrl = map[alt];
+                    if (imgUrl) img.src = imgUrl;
+                });
+            })
+            .catch(function() {});
+    })();
+    </script>
 </body>
 </html>

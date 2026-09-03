@@ -39,60 +39,41 @@ document.querySelector('.theme-toggle')?.addEventListener('click', () => {
 });
 
 // ========================================
-// DICTIONNAIRE DES JEUX AVEC LEURS IMAGES
+// DICTIONNAIRE DES JEUX (NOMS SEULEMENTS)
 // ========================================
 const GAMES_DB = {
-    'gta': {
-        name: 'Grand Theft Auto',
-        icon: '/static/images/gta.jpg',
-        category: 'Action'
-    },
-    'mario': {
-        name: 'Super Mario',
-        icon: '/static/images/mario.avif',
-        category: 'Plateforme'
-    },
-    'resident evil': {
-        name: 'Resident Evil',
-        icon: '/static/images/resident-evil-4.jpg',
-        category: 'Horreur'
-    },
-    'resident evil 4': {
-        name: 'Resident Evil 4',
-        icon: '/static/images/resident-evil-4.jpg',
-        category: 'Horreur'
-    },
-    'residentevil1': {
-        name: 'Resident Evil',
-        icon: '/static/images/resident-evil-1.jpg',
-        category: 'Horreur'
-    },
-    'residentevil': {
-        name: 'Resident Evil',
-        icon: '/static/images/resident-evil.jpg',
-        category: 'Horreur'
-    },
-    'galaxy defenders': {
-        name: 'Galaxy Defenders',
-        icon: null,
-        category: 'Action'
-    },
-    'zelda': {
-        name: 'Legend of Zelda',
-        icon: null,
-        category: 'Aventure'
-    },
-    'cyberpunk': {
-        name: 'Cyberpunk 2077',
-        icon: null,
-        category: 'RPG'
-    },
-    'fifa': {
-        name: 'FIFA',
-        icon: null,
-        category: 'Sport'
-    }
+    'gta': { name: 'Grand Theft Auto', category: 'Action' },
+    'mario': { name: 'Super Mario', category: 'Plateforme' },
+    'resident evil': { name: 'Resident Evil', category: 'Horreur' },
+    'resident evil 4': { name: 'Resident Evil 4', category: 'Horreur' },
+    'residentevil1': { name: 'Resident Evil', category: 'Horreur' },
+    'residentevil': { name: 'Resident Evil', category: 'Horreur' },
+    'galaxy defenders': { name: 'Galaxy Defenders', category: 'Action' },
+    'zelda': { name: 'Legend of Zelda', category: 'Aventure' },
+    'cyberpunk': { name: 'Cyberpunk 2077', category: 'RPG' },
+    'fifa': { name: 'FIFA', category: 'Sport' }
 };
+
+// ========================================
+// CACHE D'IMAGES (CHARGE DEPUIS L'API)
+// ========================================
+const IMAGE_CACHE = {};
+
+async function fetchImages() {
+    try {
+        const r = await fetch('/api/catalogue');
+        if (!r.ok) return;
+        const data = await r.json();
+        const jeux = data.jeux || [];
+        for (const item of jeux) {
+            if (item.image) {
+                IMAGE_CACHE[item.jeu.toLowerCase()] = item.image;
+            }
+        }
+    } catch (e) {
+        console.warn('Impossible de charger les images:', e);
+    }
+}
 
 const GAME_GRADIENTS = {
     'galaxy defenders': 'linear-gradient(135deg, #0c0c1d 0%, #1a1a3e 50%, #2d1b69 100%)',
@@ -121,19 +102,10 @@ const GAME_GRADIENTS = {
     'apex': 'linear-gradient(135deg, #7f1d1d 0%, #dc2626 50%, #f97316 100%)'
 };
 
-// couverture reelle si disponible
-const COVER_IMAGES = {
-    'grand theft auto': '/static/images/gta.jpg',
-    'super mario': '/static/images/mario.avif',
-    'resident evil': '/static/images/resident-evil-4.jpg'
-};
-
 function getCatalogueCover(jeu) {
     const lower = jeu.toLowerCase();
-    for (const [key, img] of Object.entries(COVER_IMAGES)) {
-        if (lower.includes(key)) {
-            return { type: 'image', content: img };
-        }
+    if (IMAGE_CACHE[lower]) {
+        return { type: 'image', content: IMAGE_CACHE[lower] };
     }
     for (const [key, grad] of Object.entries(GAME_GRADIENTS)) {
         if (lower.includes(key)) {
@@ -147,26 +119,18 @@ function getCatalogueCover(jeu) {
 // FONCTION POUR OBTENIR L'IMAGE D'UN JEU
 // ========================================
 function getGameImage(gameName) {
-    if (!gameName) return { type: 'svg', content: ICONS.fallbackGame };
+    if (!gameName) return { type: 'gradient', content: null };
     const lower = gameName.toLowerCase();
-
-    if (GAMES_DB[lower] && GAMES_DB[lower].icon) {
-        return { type: 'image', content: GAMES_DB[lower].icon };
+    if (IMAGE_CACHE[lower]) {
+        return { type: 'image', content: IMAGE_CACHE[lower] };
     }
-
-    for (const [key, data] of Object.entries(GAMES_DB)) {
-        if (lower.includes(key) && data.icon) {
-            return { type: 'image', content: data.icon };
-        }
-    }
-
     for (const [key] of Object.entries(GAMES_DB)) {
         if (lower.includes(key)) {
-            return { type: 'svg', content: ICONS.fallbackGame };
+            const cached = IMAGE_CACHE[key];
+            if (cached) return { type: 'image', content: cached };
         }
     }
-
-    return { type: 'svg', content: ICONS.fallbackGame };
+    return { type: 'gradient', content: getGameGradient(gameName) };
 }
 
 function getGameGradient(gameName) {
@@ -190,18 +154,18 @@ function getGameDisplayName(gameName) {
 
 function renderGameIcon(iconData, jeu, extraStyle) {
     if (iconData.type === 'image') {
-        return `<img src="${iconData.content}" alt="${jeu}" style="width:100%;height:120px;object-fit:cover;border-radius:8px;margin-bottom:8px;${extraStyle || ''}">`;
+        return '<img src="' + iconData.content + '" alt="' + jeu + '" style="width:100%;height:120px;object-fit:cover;border-radius:8px;margin-bottom:8px;' + (extraStyle || '') + '">';
     }
-    const gradient = getGameGradient(jeu);
-    const bgStyle = gradient ? `background:linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.25)),${gradient};` : 'background:var(--bg-input);';
-    return `<div style="width:100%;height:120px;display:flex;align-items:center;justify-content:center;border-radius:8px;margin-bottom:8px;${bgStyle}"><svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="6"/><path d="M6 12h.01M9 12h.01"/><circle cx="15" cy="11" r="0.4"/><circle cx="17" cy="13" r="0.4"/><circle cx="15.5" cy="14.5" r="0.4"/></svg></div>`;
+    const gradient = iconData.type === 'gradient' ? iconData.content : getGameGradient(jeu);
+    const bgStyle = gradient ? 'background:linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.25)),' + gradient + ';' : 'background:var(--bg-input);';
+    return '<div style="width:100%;height:120px;display:flex;align-items:center;justify-content:center;border-radius:8px;margin-bottom:8px;' + bgStyle + '"><svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="6"/><path d="M6 12h.01M9 12h.01"/><circle cx="15" cy="11" r="0.4"/><circle cx="17" cy="13" r="0.4"/><circle cx="15.5" cy="14.5" r="0.4"/></svg></div>';
 }
 
 function renderGameIconSmall(iconData, jeu) {
     if (iconData.type === 'image') {
-        return `<img src="${iconData.content}" alt="${jeu}" style="width:50px;height:50px;border-radius:10px;object-fit:cover;">`;
+        return '<img src="' + iconData.content + '" alt="' + jeu + '" style="width:50px;height:50px;border-radius:10px;object-fit:cover;">';
     }
-    return `<div class="game-icon-small">${iconData.content}</div>`;
+    return '<div class="game-icon-small"></div>';
 }
 
 // ========================================
@@ -696,6 +660,7 @@ document.addEventListener('keydown', (e) => {
 // FOCUS AUTO
 // ========================================
 document.addEventListener('DOMContentLoaded', () => {
+    fetchImages();
     if (window.location.pathname === '/recherche') {
         initCatalogue();
         renderCataloguePartielle();

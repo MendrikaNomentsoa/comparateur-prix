@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameStore - La référence du gaming</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0f0f1a;
+            color: #fff;
+            padding: 30px;
+            min-height: 100vh;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 30px 0;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .header h1 {
+            font-size: 2.8em;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header p {
+            color: #8899aa;
+            font-size: 1.1em;
+            margin-top: 10px;
+        }
+        
+        .header .badge {
+            display: inline-block;
+            background: rgba(247, 151, 30, 0.2);
+            color: #f7971e;
+            padding: 5px 20px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            margin-top: 10px;
+            border: 1px solid rgba(247, 151, 30, 0.2);
+        }
+        
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .game-card {
+            background: linear-gradient(145deg, #1a1a2e, #222244);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #f7971e, #ffd200);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(247, 151, 30, 0.3);
+            box-shadow: 0 15px 40px rgba(247, 151, 30, 0.1);
+        }
+        
+        .game-card:hover::before {
+            opacity: 1;
+        }
+        
+        .game-card .game-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        
+        .game-card .game-title {
+            font-size: 1.15em;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        
+        .game-card .game-title .edition {
+            font-size: 0.7em;
+            color: #f7971e;
+            font-weight: 400;
+            background: rgba(247, 151, 30, 0.1);
+            padding: 2px 10px;
+            border-radius: 12px;
+        }
+        
+        .game-card .game-category {
+            display: inline-block;
+            padding: 3px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            font-size: 0.7em;
+            color: #8899aa;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .game-card .price-block {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 12px 0;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+        
+        .game-card .game-price {
+            font-size: 1.6em;
+            font-weight: 800;
+            color: #ffd700;
+        }
+        
+        .game-card .game-price .old-price {
+            font-size: 0.5em;
+            color: #666;
+            text-decoration: line-through;
+            font-weight: 400;
+            margin-left: 8px;
+        }
+        
+        .game-card .shipping-info {
+            color: #8899aa;
+            font-size: 0.85em;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .game-card .shipping-info .free {
+            color: #4ade80;
+            font-weight: 600;
+        }
+        
+        .game-card .stock-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+        
+        .stock-status.in-stock {
+            background: rgba(74, 222, 128, 0.15);
+            color: #4ade80;
+            border: 1px solid rgba(74, 222, 128, 0.2);
+        }
+        
+        .stock-status.low-stock {
+            background: rgba(251, 191, 36, 0.15);
+            color: #fbbf24;
+            border: 1px solid rgba(251, 191, 36, 0.2);
+        }
+        
+        .stock-status.out-of-stock {
+            background: rgba(248, 113, 113, 0.15);
+            color: #f87171;
+            border: 1px solid rgba(248, 113, 113, 0.2);
+        }
+        
+        .stock-status .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .stock-status.in-stock .dot {
+            background: #4ade80;
+        }
+        
+        .stock-status.low-stock .dot {
+            background: #fbbf24;
+        }
+        
+        .stock-status.out-of-stock .dot {
+            background: #f87171;
+        }
+        
+        .game-card .rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 8px;
+            font-size: 0.85em;
+            color: #fbbf24;
+        }
+        
+        .game-card .rating span {
+            color: #8899aa;
+            margin-left: 5px;
+        }
+        
+        .game-card .platforms {
+            display: flex;
+            gap: 5px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .game-card .platforms .platform {
+            padding: 2px 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            font-size: 0.7em;
+            color: #8899aa;
+        }
+        
+        .game-card .discount-tag {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #f7971e, #ffd200);
+            color: #0f0f1a;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: 800;
+        }
+        
+        .game-card .exclusive {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(247, 151, 30, 0.2);
+            color: #f7971e;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 0.65em;
+            border: 1px solid rgba(247, 151, 30, 0.2);
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎮 GameStore</h1>
+        <p>La boutique premium des gamers</p>
+        <span class="badge">⭐ Plus de 1000 jeux disponibles</span>
+    </div>
+    
+    <div class="games-grid">
+        
+        <!-- ===== JEUX D'ACTION ===== -->
+        <div class="game-card">
+            <span class="exclusive">EXCLUSIF</span>
+            <span class="discount-tag">-20%</span>
+            <div class="game-icon">🔫</div>
+            <div class="game-title">Grand Theft Auto VI <span class="edition">Édition Collector</span></div>
+            <span class="game-category">Action</span>
+            <div class="price-block">
+                <span class="game-price">55,99 € <span class="old-price">69,99 €</span></span>
+            </div>
+            <div class="shipping-info">🚚 Livraison : <span class="free">GRATUITE</span></div>
+            <span class="stock-status in-stock"><span class="dot"></span> En stock</span>
+            <div class="rating">⭐⭐⭐⭐⭐ <span>(124 avis)</span></div>
+            <div class="platforms">
+                <span class="platform">PS5</span>
+                <span class="platform">Xbox</span>
+                <span class="platform">PC</span>
+            </div>
+        </div>
+        
+        <div class="game-card">
+            <div class="game-icon">⚔️</div>
+            <div class="game-title">The Witcher 4 <span class="edition">Édition Complète</span></div>
+            <span class="game-category">RPG</span>
+            <div class="price-block">
+                <span class="game-price">49,99 €</span>
+            </div>
+            <div class="shipping-info">🚚 Livraison : 2,50 €</div>
+            <span class="stock-status in-stock"><span class="dot"></span> En stock</span>
+            <div class="rating">⭐⭐⭐⭐⭐ <span>(89 avis)</span></div>
+            <div class="platforms">
+                <span class="platform">PS5</span>
+                <span class="platform">PC</span>
+            </div>
+        </div>
+        
+        <div class="game-card">
+            <span class="discount-tag">-30%</span>
+            <div class="game-icon">🎯</div>
+            <div class="game-title">Call of Duty: Black Ops V <span class="edition">Édition Spéciale</span></div>
+            <span class="game-category">FPS</span>
+            <div class="price-block">
+                <span class="game-price">41,99 € <span class="old-price">59,99 €</span></span>
+            </div>
+            <div class="shipping-info">🚚 Livraison : 3,00 €</div>
+            <span class="stock-status low-stock"><span class="dot"></span> Dernières pièces</span>
+            <div class="rating">⭐⭐⭐⭐ <span>(203 avis)</span></div>
+            <div class="platforms">
+                <span class="platform">PS5</span>
+                <span class="platform">Xbox</span>
+            </div>
+        </div>
+        
+        <div class="game-card">
+            <div class="game-icon">🤠</div>
+            <div class="game-title">Red Dead Redemption III</div>
+            <span class="game-category">Action-Aventure</span>
+            <div class="price-block">
+                <span class="game-price">59,99 €</span>
+            </div>
+            <div class="shipping-info">🚚 Livraison : 2,90 €</div>
+            <span class="stock-status out-of-stock"><span class="dot"></span> Rupture de stock</span>
+            <div class="rating">⭐⭐⭐⭐⭐ <span>(156 avis)</span></div>
+            <div class="platforms">
+                <span class="platform">PS5</span>
+                <span class="platform">Xbox</span>
+                <span class="platform">PC</span>
+            </div>
+        </div>
+        
+        <!-- ===== JEUX DE SPORT ===== -->
+        <div class="game-card">
+            <span class="exclusive">EXCLUSIF</span>
+            <div class="game-icon">⚽</div>
+            <div class="game-title">FIFA 24 <span class="edition">Édition Ultimate</span></div>
+            <span class="game-category">Sport</span>
+            <div class="price-block">
+                <span class="game-price">49,99 €</span>
+            </div>
+            <div class="shipping-info">🚚 Livraison : <span class="free">GRATUITE</span></div>
+            <span class="stock-status in-stock"><span class="dot"></span> En stock</span>
+            <div class="rating">⭐⭐⭐⭐⭐ <span>(312 avis)</span></div>
+            <div class="platforms">
+                <span class="platform">PS5</span>
+                <span class="platform">Xbox</span>
+            </div>
+        </div>
+        
+        <div class="game-card">
+            <div class="game-icon">🏀</div>
+            <div class="game-title">NBA 2K24 <span class="edition">Édition Champion</span></div>
+            <span class="game-category">Sport</span>
+            <div class="price-block">
+                <span class="game-price">39,99 €</span>
+            </div>
+            <div class="shipping-info">🚚 Livraison : 2,80 €</div>
+            <span class="stock-status in-stock"><span class="dot"></span> En stock</span>
+            <div class="rating">⭐⭐⭐⭐ <span>(178 avis)</span></div>
+            <div class="platforms">
+                <span class="platform">PS5</span>
+                <span class="platform">PC</span>
+            </div>
+        </div>
+        
+        <!-- ===== JEUX DE STRATÉGIE ===== -->
+        <div class="game-card">
+            <span class="discount-tag">-15%</span>
+            <div class="game-icon">🏛️</div>
+            <div class="game-title">Civilization VII <span class="edition">Édition Royale</span></div>
+            <span class="game-category">Stratégie</span>
+            <div class="price-block">
+                <span class="game-price">46,99 € <span class="old-price">54,99 €</span></span>
+            </div>
+            <div class="shipping-info">🚚 Livraison : 2,00 €</div>
+            <span class="stock-status in-stock"><span class="dot"></span> En stock</span>
+            <div class="rating">⭐⭐⭐⭐⭐ <span>(95 avis)</span></div>
+            <div class="platforms">
+                <span class="platform">PC</span>
+            </div>
+        </div>
+        
+        <div class="game-card">
+            <div class="game-icon">⚔️</div>
+            <div class="game-title">Age of Empires IV <span class="edition">Édition Anniversaire</span></div>
+            <span class="game-category">Stratégie</span>
+            <div class="price-block">
+                <span class="game-price">29,99 €</span>
+            </div>
+            <div class="shipping-info">🚚 Livraison : 2,50 €</div>
+            <span class="stock-status low-stock"><span class="dot"></span> Dernières pièces</span>
+            <div class="rating">⭐⭐⭐⭐ <span>(67 avis)</span></div>
+            <div class="platforms">
+                <span class="platform">PC</span>
+            </div>
+        </div>
+        
+        <!-- ===== JEUX DE PLATE-FORME ===== -->
+        <div class="game-card">
+            <span class="exclusive">EXCLUSIF</span>
+            <span class="discount-tag">-25%</span>
+            <div class="game-icon">🍄</div>
+            <div class="game-title">Super Mario Odyssey 2 <span class="edition">Édition Collector</span></div>
+            <span class="game-category">Plate-forme</span>
+            <div class="price-block">
+                <span class="game-price">37,49 € <span class="old-price">49,99 €</span></span>
+            </div>
+            <div class="shipping-info">🚚 Livraison : <span class="free">GRATUITE</span></div>
+            <span class="stock-status in-stock"><span class="dot"></span> En stock</span>
+            <div class="rating">⭐⭐⭐⭐⭐ <span>(267 avis)</span></div>
+            <div class="platforms">
+                <span class="platform">Nintendo Switch</span>
+            </div>
+        </div>
+        
+        <div class="game-card">
+            <div class="game-icon">🦔</div>
+            <div class="game-title">Sonic Frontiers 2</div>
+            <span class="game-category">Plate-forme</span>
+            <div class="price-block">
+                <span class="game-price">29,99 €</span>
+            </div>
+            <div class="shipping-info">🚚 Livraison : 2,90 €</div>
+            <span class="stock-status out-of-stock"><span class="dot"></span> Rupture de stock</span>
+            <div class="rating">⭐⭐⭐⭐ <span>(89 avis)</span></div>
+            <div class="platforms">
+                <span class="platform">PS5</span>
+                <span class="platform">Xbox</span>
+                <span class="platform">Switch</span>
+            </div>
+        </div>
+        
+        <!-- ===== JEUX D'HORREUR ===== -->
+        <div class="game-card">
+            <span class="discount-tag">-20%</span>
+            <div class="game-icon">🧟</div>
+            <div class="game-title">Resident Evil 9 <span class="edition">Édition Deluxe</span></div>
+            <span class="game-category">Horreur</span>
+            <div class="price-block">
+                <span class="game-price">47,99 € <span class="old-price">59,99 €</span></span>
+            </div>
+            <div class="shipping-info">🚚 Livraison : 2,50 €</div>
+            <span class="stock-status in-stock"><span class="dot"></span> En stock</span>
+            <div class="rating">⭐⭐⭐⭐⭐ <span>(143 avis)</span></div>
+            <div class="platforms">
+                <span class="platform">PS5</span>
+                <span class="platform">Xbox</span>
+                <span class="platform">PC</span>
+            </div>
+        </div>
+        
+        <div class="game-card">
+            <div class="game-icon">🌫️</div>
+            <div class="game-title">Silent Hill 2 Remake</div>
+            <span class="game-category">Horreur</span>
+            <div class="price-block">
+                <span class="game-price">34,99 €</span>
+            </div>
+            <div class="shipping-info">🚚 Livraison : 3,00 €</div>
+            <span class="stock-status in-stock"><span class="dot"></span> En stock</span>
+            <div class="rating">⭐⭐⭐⭐⭐ <span>(98 avis)</span></div>
+            <div class="platforms">
+                <span class="platform">PS5</span>
+                <span class="platform">PC</span>
+            </div>
+        </div>
+        
+        <!-- ===== JEUX INDÉPENDANTS ===== -->
+        <div class="game-card">
+            <div class="game-icon">🐝</div>
+            <div class="game-title">Hollow Knight: Silksong</div>
+            <span class="game-category">Indépendant</span>
+            <div class="price-block">
+                <span class="game-price">19,99 €</span>
+            </div>
+            <div class="shipping-info">🚚 Livraison : 1,50 €</div>
+            <span class="stock-status in-stock"><span class="dot"></span> En stock</span>
+            <div class="rating">⭐⭐⭐⭐⭐ <span>(234 avis)</span></div>
+            <div class="platforms">
+                <span class="platform">PS5</span>
+                <span class="platform">Switch</span>
+                <span class="platform">PC</span>
+            </div>
+        </div>
+        
+        <div class="game-card">
+            <div class="game-icon">🌾</div>
+            <div class="game-title">Stardew Valley 2</div>
+            <span class="game-category">Indépendant</span>
+            <div class="price-block">
+                <span class="game-price">14,99 €</span>
+            </div>
+            <div class="shipping-info">🚚 Livraison : 1,00 €</div>
+            <span class="stock-status in-stock"><span class="dot"></span> En stock</span>
+            <div class="rating">⭐⭐⭐⭐⭐ <span>(412 avis)</span></div>
+            <div class="platforms">
+                <span class="platform">Switch</span>
+                <span class="platform">PC</span>
+            </div>
+        </div>
+        
+        <div class="game-card">
+            <div class="game-icon">🏔️</div>
+            <div class="game-title">Celeste 2</div>
+            <span class="game-category">Indépendant</span>
+            <div class="price-block">
+                <span class="game-price">9,99 €</span>
+            </div>
+            <div class="shipping-info">🚚 Livraison : 1,50 €</div>
+            <span class="stock-status out-of-stock"><span class="dot"></span> Rupture de stock</span>
+            <div class="rating">⭐⭐⭐⭐ <span>(156 avis)</span></div>
+            <div class="platforms">
+                <span class="platform">PC</span>
+            </div>
+        </div>
+        
+        <!-- ===== JEUX DE BATAILLE ROYALE ===== -->
+        <div class="game-card">
+            <div class="game-icon">🛸</div>
+            <div class="game-title">Fortnite Chapter 5 <span class="edition">Battle Pass Inclus</span></div>
+            <span class="game-category">Battle Royale</span>
+            <div class="price-block">
+                <span class="game-price">0,00 €</span>
+            </div>
+            <div class="shipping-info">🚚 Livraison : <span class="free">GRATUITE</span></div>
+            <span class="stock-status in-stock"><span class="dot"></span> En stock</span>
+            <div class="rating">⭐⭐⭐⭐ <span>(1024 avis)</span></div>
+            <div class="platforms">
+                <span class="platform">PS5</span>
+                <span class="platform">Xbox</span>
+                <span class="platform">Switch</span>
+                <span class="platform">PC</span>
+            </div>
+        </div>
+        
+        <div class="game-card">
+            <span class="exclusive">EXCLUSIF</span>
+            <div class="game-icon">🏹</div>
+            <div class="game-title">Apex Legends 2 <span class="edition">Édition Starter</span></div>
+            <span class="game-category">Battle Royale</span>
+            <div class="price-block">
+                <span class="game-price">0,00 €</span>
+            </div>
+            <div class="shipping-info">🚚 Livraison : <span class="free">GRATUITE</span></div>
+            <span class="stock-status in-stock"><span class="dot"></span> En stock</span>
+            <div class="rating">⭐⭐⭐⭐ <span>(876 avis)</span></div>
+            <div class="platforms">
+                <span class="platform">PS5</span>
+                <span class="platform">Xbox</span>
+                <span class="platform">PC</span>
+            </div>
+        </div>
+        
+        <!-- ===== NOUVEAUX JEUX ===== -->
+        <div class="game-card">
+            <span class="discount-tag">NOUVEAU</span>
+            <div class="game-icon">🚀</div>
+            <div class="game-title">Starfield <span class="edition">Édition Premium</span></div>
+            <span class="game-category">RPG</span>
+            <div class="price-block">
+                <span class="game-price">44,99 €</span>
+            </div>
+            <div class="shipping-info">🚚 Livraison : 2,50 €</div>
+            <span class="stock-status in-stock"><span class="dot"></span> En stock</span>
+            <div class="rating">⭐⭐⭐⭐ <span>(67 avis)</span></div>
+            <div class="platforms">
+                <span class="platform">Xbox</span>
+                <span class="platform">PC</span>
+            </div>
+        </div>
+        
+        <div class="game-card">
+            <div class="game-icon">🗡️</div>
+            <div class="game-title">Assassin's Creed Mirage</div>
+            <span class="game-category">Action</span>
+            <div class="price-block">
+                <span class="game-price">34,99 €</span>
+            </div>
+            <div class="shipping-info">🚚 Livraison : 2,80 €</div>
+            <span class="stock-status low-stock"><span class="dot"></span> Dernières pièces</span>
+            <div class="rating">⭐⭐⭐⭐⭐ <span>(89 avis)</span></div>
+            <div class="platforms">
+                <span class="platform">PS5</span>
+                <span class="platform">Xbox</span>
+                <span class="platform">PC</span>
+            </div>
+        </div>
+        
+        <div class="game-card">
+            <span class="discount-tag">-10%</span>
+            <div class="game-icon">🌌</div>
+            <div class="game-title">Cyberpunk 2077 <span class="edition">Phantom Liberty</span></div>
+            <span class="game-category">RPG</span>
+            <div class="price-block">
+                <span class="game-price">35,99 € <span class="old-price">39,99 €</span></span>
+            </div>
+            <div class="shipping-info">🚚 Livraison : 2,90 €</div>
+            <span class="stock-status in-stock"><span class="dot"></span> En stock</span>
+            <div class="rating">⭐⭐⭐⭐⭐ <span>(345 avis)</span></div>
+            <div class="platforms">
+                <span class="platform">PS5</span>
+                <span class="platform">Xbox</span>
+                <span class="platform">PC</span>
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>

@@ -1,6 +1,5 @@
 import pandas as pd
 
-
 def nettoyer_prix(texte):
     if not texte:
         return None

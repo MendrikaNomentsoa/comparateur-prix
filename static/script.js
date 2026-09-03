@@ -59,20 +59,58 @@ const GAMES_DB = {
 // ========================================
 const IMAGE_CACHE = {};
 
+function refreshVisibleImages() {
+    if (window.location.pathname === '/recherche') {
+        renderCataloguePartielle();
+        if (resultsContainer && resultsContainer.style.display === 'block' && lastData) {
+            afficherResultats(lastData, lastProduit);
+        }
+    }
+}
+
 async function fetchImages() {
     try {
         const r = await fetch('/api/catalogue');
         if (!r.ok) return;
         const data = await r.json();
         const jeux = data.jeux || [];
+        let added = false;
         for (const item of jeux) {
             if (item.image) {
                 IMAGE_CACHE[item.jeu.toLowerCase()] = item.image;
+                added = true;
             }
+        }
+        if (added) refreshVisibleImages();
+        // Charger les images manquantes en arriere-plan, par lots
+        const missing = jeux.filter(item => !IMAGE_CACHE[item.jeu.toLowerCase()]);
+        const BATCH = 4;
+        for (let i = 0; i < missing.length; i += BATCH) {
+            const batch = missing.slice(i, i + BATCH);
+            await Promise.all(batch.map(async (item) => {
+                try {
+                    const ir = await fetch('/api/image/' + encodeURIComponent(item.jeu));
+                    if (ir.ok) {
+                        const idata = await ir.json();
+                        if (idata.image) {
+                            IMAGE_CACHE[item.jeu.toLowerCase()] = idata.image;
+                        }
+                    }
+                } catch (e) {}
+            }));
+            refreshVisibleImages();
         }
     } catch (e) {
         console.warn('Impossible de charger les images:', e);
     }
+}
+
+function resolveIcon(jeu, apiImage) {
+    if (apiImage) {
+        IMAGE_CACHE[jeu.toLowerCase()] = apiImage;
+        return { type: 'image', content: apiImage };
+    }
+    return getGameImage(jeu);
 }
 
 const GAME_GRADIENTS = {
@@ -469,7 +507,9 @@ function afficherResultats(data, produit) {
     if (searchTerm) searchTerm.textContent = produit;
     if (resultCount) resultCount.textContent = data.total;
 
-    const coverData = getCatalogueCover(produit);
+    const apiBannerImg = (data.resultats && data.resultats[0] && data.resultats[0].image) || null;
+    const coverData = apiBannerImg ? { type: 'image', content: apiBannerImg } : getCatalogueCover(produit);
+    if (apiBannerImg) IMAGE_CACHE[produit.toLowerCase()] = apiBannerImg;
     const bannerCover = document.getElementById('resultBannerCover');
     const bannerTitle = document.getElementById('resultBannerTitle');
     if (bannerCover) {
@@ -485,7 +525,7 @@ function afficherResultats(data, produit) {
     if (bestDeal && data.meilleur) {
         const m = data.meilleur;
         currentBestUrl = storeUrl(m.site, m.jeu);
-        const iconData = getGameImage(m.jeu);
+        const iconData = resolveIcon(m.jeu, m.image);
         const displayName = getGameDisplayName(m.jeu);
 
         bestDeal.innerHTML = `
@@ -537,7 +577,7 @@ function creerCarteProduit(produit, isBest) {
     card.style.transform = 'translateY(16px)';
     card.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
 
-    const iconData = getGameImage(produit.jeu);
+    const iconData = resolveIcon(produit.jeu, produit.image);
     const displayName = getGameDisplayName(produit.jeu);
 
     let stockClass = 'inconnu';
@@ -600,7 +640,7 @@ function trierPrix() {
     if (bestDeal && trie.length > 0) {
         const m = trie[0];
         currentBestUrl = storeUrl(m.site, m.jeu);
-        const iconData = getGameImage(m.jeu);
+        const iconData = resolveIcon(m.jeu, m.image);
         const displayName = getGameDisplayName(m.jeu);
 
         bestDeal.innerHTML = `

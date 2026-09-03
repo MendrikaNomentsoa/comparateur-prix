@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, jsonify
 from scraper import fetch_all_sites
 from extracteur import extraire_toutes
 from analyse import comparer_prix
-from image_fetcher import fetch_image, fetch_images_for_catalogue
+from image_fetcher import fetch_image, get_cached_image
 
 app = Flask(__name__)
 
@@ -44,17 +44,15 @@ def recherche_page():
 
 @app.route('/api/catalogue')
 def api_catalogue():
-    """Catalogue des jeux avec images"""
-    jeux = [c["jeu"] for c in CATALOGUE]
-    images = fetch_images_for_catalogue(jeux)
+    """Catalogue des jeux avec images (depuis le cache)"""
     resultats = []
     for c in CATALOGUE:
         jeu = c["jeu"]
-        img_data = images.get(jeu)
+        img_url = get_cached_image(jeu)
         resultats.append({
             "jeu": jeu,
             "boutiques": c["boutiques"],
-            "image": img_data["url"] if img_data else None
+            "image": img_url if img_url else None
         })
     return jsonify({"jeux": resultats})
 
